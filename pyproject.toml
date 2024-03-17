@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "tg-bot"
+version = "0.1.0"
+description = ""
+authors = ["VladyslavBon <vladislav.bondarenko96@gmail.com>"]
+readme = "README.md"
+packages = [{include = "tg_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiogram = "^3.4.1"
+openai = "^1.14.1"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
