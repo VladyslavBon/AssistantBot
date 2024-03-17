@@ -1,8 +1,9 @@
 from openai import AsyncOpenAI
 import logging
-import config
 
-client = AsyncOpenAI(api_key=config.OPENAI_TOKEN)
+from config import settings
+
+client = AsyncOpenAI(api_key=settings.openai_token)
 
 
 async def generate_text(prompt) -> dict:

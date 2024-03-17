@@ -8,10 +8,10 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types.callback_query import CallbackQuery
 
 import utils
-import config
 import keyboard
 import text
 from states import Gen
+from config import settings
 
 router = Router()
 
@@ -40,7 +40,7 @@ async def input_weather_prompt(clbck: CallbackQuery, state: FSMContext):
 async def get_weather(msg: types.Message, state: FSMContext):
     try:
         response = requests.get(
-            f"http://api.openweathermap.org/data/2.5/weather?q={msg.text}&lang=ua&units=metric&appid={config.OPEN_WEATHER_TOKEN}"
+            f"http://api.openweathermap.org/data/2.5/weather?q={msg.text}&lang=ua&units=metric&appid={settings.open_weather_token}"
         )
         data = response.json()
         city = data["name"]

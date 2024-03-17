@@ -7,13 +7,13 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.client.bot import DefaultBotProperties
 from aiogram.utils.chat_action import ChatActionMiddleware
 
-import config
+from config import settings
 from handlers import router
 
 
 async def main():
     bot = Bot(
-        token=config.BOT_TOKEN,
+        token=settings.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
     dp = Dispatcher(storage=MemoryStorage())
