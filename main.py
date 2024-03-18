@@ -17,13 +17,13 @@ async def main():
         token=settings.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
+    httpd = http.server.HTTPServer(("", 8080), http.server.SimpleHTTPRequestHandler)
+    await httpd.serve_forever()
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
     await bot.delete_webhook(drop_pending_updates=True)
     dp.message.middleware(ChatActionMiddleware())
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
-    httpd = http.server.HTTPServer(("", 8080), http.server.SimpleHTTPRequestHandler)
-    await httpd.serve_forever()
 
 
 if __name__ == "__main__":
