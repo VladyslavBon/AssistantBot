@@ -12,10 +12,6 @@ from config import settings
 from handlers import router
 
 
-httpd = http.server.HTTPServer(("", 80), http.server.SimpleHTTPRequestHandler)
-httpd.serve_forever()
-
-
 async def main():
     bot = Bot(
         token=settings.bot_token,
@@ -29,5 +25,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    httpd = http.server.HTTPServer(("", 8080), http.server.SimpleHTTPRequestHandler)
+    httpd.serve_forever()
     logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
