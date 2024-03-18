@@ -13,6 +13,8 @@ from handlers import router
 
 
 async def main():
+    loop = asyncio.get_event_loop()
+
     bot = Bot(
         token=settings.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
@@ -30,7 +32,7 @@ async def main():
     app.add_routes([web.get("/", hello)])
 
     await asyncio.gather(
-        web.run_app(app, port=8080),
+        loop.run_until_complete(web.run_app(app, port=8080)),
         dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types()),
     )
 
