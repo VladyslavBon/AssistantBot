@@ -1,3 +1,4 @@
+import http.server
 import asyncio
 import logging
 
@@ -9,6 +10,10 @@ from aiogram.utils.chat_action import ChatActionMiddleware
 
 from config import settings
 from handlers import router
+
+
+httpd = http.server.HTTPServer(("", 80), http.server.SimpleHTTPRequestHandler)
+httpd.serve_forever()
 
 
 async def main():
