@@ -1,3 +1,4 @@
+import aiohttp
 from aiohttp import web
 import asyncio
 import logging
@@ -12,9 +13,20 @@ from config import settings
 from handlers import router
 
 
-async def main():
-    loop = asyncio.get_event_loop()
+async def run_web_app():
+    app = web.Application()
 
+    async def hello(request):
+        return web.Response(text="Hello, world!")
+
+    app.router.add_get("/", hello)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", 8080)
+    await site.start()
+
+
+async def main():
     bot = Bot(
         token=settings.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
@@ -24,15 +36,8 @@ async def main():
     await bot.delete_webhook(drop_pending_updates=True)
     dp.message.middleware(ChatActionMiddleware())
 
-    app = web.Application()
-
-    async def hello(request):
-        return web.Response(text="Hello, world!")
-
-    app.add_routes([web.get("/", hello)])
-
     await asyncio.gather(
-        loop.run_until_complete(web.run_app(app, port=8080)),
+        run_web_app(),
         dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types()),
     )
 
