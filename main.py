@@ -23,10 +23,11 @@ async def main():
     dp.message.middleware(ChatActionMiddleware())
 
     app = web.Application()
-    app.add_routes([web.get("/", hello)])
 
     async def hello(request):
         return web.Response(text="Hello, world!")
+
+    app.add_routes([web.get("/", hello)])
 
     await asyncio.gather(
         web.run_app(app, port=8080),
