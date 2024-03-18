@@ -1,4 +1,4 @@
-import http.server
+from aiohttp import web
 import asyncio
 import logging
 
@@ -12,11 +12,6 @@ from config import settings
 from handlers import router
 
 
-async def run_http_server():
-    httpd = http.server.HTTPServer(("", 8080), http.server.SimpleHTTPRequestHandler)
-    await httpd.serve_forever()
-
-
 async def main():
     bot = Bot(
         token=settings.bot_token,
@@ -26,8 +21,15 @@ async def main():
     dp.include_router(router)
     await bot.delete_webhook(drop_pending_updates=True)
     dp.message.middleware(ChatActionMiddleware())
+
+    app = web.Application()
+    app.add_routes([web.get("/", hello)])
+
+    async def hello(request):
+        return web.Response(text="Hello, world!")
+
     await asyncio.gather(
-        run_http_server(),
+        web.run_app(app, port=8080),
         dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types()),
     )
 
